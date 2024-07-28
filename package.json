@@ -13,7 +13,7 @@
     "@huggingface/inference": "2.8.0",
     "@nextui-org/react": "2.4.6",
     "ai": "3.2.37",
-    "framer-motion": "^11.3.18",
+    "framer-motion": "11.3.18",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-router-dom": "6.25.1"
@@ -28,6 +28,7 @@
     "eslint-plugin-react-hooks": "4.6.2",
     "eslint-plugin-react-refresh": "0.4.7",
     "postcss": "8.4.40",
+    "prettier": "3.3.3",
     "tailwindcss": "3.4.7",
     "vite": "5.3.4"
   }
