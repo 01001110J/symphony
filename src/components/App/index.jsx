@@ -1,5 +1,7 @@
+import Router from '@components/Router'
+
 import './App.css'
 
-const App = () => <h1>Let&apos;s gooooooo</h1>
+const App = () => <Router />
 
 export default App
