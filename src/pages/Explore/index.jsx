@@ -21,7 +21,7 @@ import {
 import { motion } from 'framer-motion';
 
 
-import Dashboard from "@pages/Dashboard";
+import Dashboard from "@components/Dashboard";
 
 const rows = [
     {

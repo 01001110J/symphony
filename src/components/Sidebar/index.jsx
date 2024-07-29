@@ -1,4 +1,19 @@
+import { CiHeart, CiChat1, CiCircleInfo  } from "react-icons/ci";
+
 import SidebarItem from '@components/Sidebar/SidebarItem'
+
+const routes = [
+  {
+    label: 'Liked songs',
+    path: '/liked-songs',
+    icon: <CiHeart />,
+  },
+  {
+    label: 'Make your own song',
+    path: '/song/new',
+    icon: <CiChat1 />
+  }
+]
 
 const SideBar = () => {
   return (
@@ -37,17 +52,14 @@ const SideBar = () => {
           </div>
         </form>
         <ul className="mt-6 space-y-2">
-          <SidebarItem />
-          <SidebarItem />
-          <SidebarItem />
-          <SidebarItem />
-          <SidebarItem />
-          <SidebarItem />
+          {
+            routes.map(({ label, path, icon }) => <SidebarItem key={path} label={label} path={path} icon={icon} />)
+          }
         </ul>
         <ul
           className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700"
         >
-          <SidebarItem />
+          <SidebarItem label="About" path="/about" icon={<CiCircleInfo />} />
         </ul>
       </div>
     </aside>

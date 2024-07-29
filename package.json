@@ -12,11 +12,15 @@
   "dependencies": {
     "@huggingface/inference": "2.8.0",
     "@nextui-org/react": "2.4.6",
+    "@wavesurfer/react": "1.0.7",
     "ai": "3.2.37",
     "framer-motion": "11.3.18",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-router-dom": "6.25.1"
+    "react-icons": "5.2.1",
+    "react-router-dom": "6.25.1",
+    "wavesurfer-multitrack": "0.4.12",
+    "wavesurfer.js": "7.8.2"
   },
   "devDependencies": {
     "@types/react": "18.3.3",
