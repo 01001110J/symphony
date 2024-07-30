@@ -1,199 +1,211 @@
-import { useMemo, useCallback, useRef, useEffect, useState } from 'react'
-import { useWavesurfer } from '@wavesurfer/react'
-import Timeline from 'wavesurfer.js/dist/plugins/timeline.esm.js'
-import Multitrack from 'wavesurfer-multitrack'
+import { useRef, useEffect, useState } from 'react'
+import WaveformPlaylist from "waveform-playlist";
+import { Input, Button, Tooltip, Divider } from "@nextui-org/react";
+import { CiChat1, CiFolderOn, CiFileOn, CiPause1 } from "react-icons/ci";
+// import { RxTrackNext, RxTrackPrevious } from "react-icons/rx";
+import { RiArrowGoBackFill } from "react-icons/ri";
+import { PiDownloadSimple } from "react-icons/pi";
+
 
 
 import Dashboard from '@components/Dashboard'
 import lofi from '@assets/lofi.mp3'
+import lofibass from '@assets/bass.mp3'
+import logoSrc from '@assets/logo.svg';
+
+import './SongLab.css'
 
 const SongLab = () => {
-  /* const containerRef = useRef(null)
+    const refs = useRef({
+        container: null,
+        playButton: null,
+        forwardButton: null,
+        backwardButton: null,
+        downloadButton: null
+    });
+    const isPlayingRef = useRef(false);
+    const [isPlaying, setIsPlaying] = useState(false);
 
-  const { wavesurfer, isPlaying, currentTime } = useWavesurfer({
-    container: containerRef,
-    height: 100,
-    waveColor: 'rgb(200, 0, 200)',
-    progressColor: 'rgb(100, 0, 100)',
-    url: lofi,
-    plugins: useMemo(() => [Timeline.create()], []),
-  })
+    useEffect(() => {
+        const playlist = WaveformPlaylist({
+            samplesPerPixel: 128,
+            waveHeight: 100,
+            container: refs.current.container,
+            state: "shift",
+            timescale: true,
+            controls: {
+                show: true,
+                width: 200
+            },
+            seekStyle: 'line',
+            zoomLevels: [128, 256, 512]
+        });
 
-
-  const onPlayPause = useCallback(() => {
-    wavesurfer && wavesurfer.playPause()
-  }, [wavesurfer]) */
-
-  const containerRef = useRef(null);
-  const playButtonRef = useRef(null);
-  const forwardButtonRef = useRef(null);
-  const backwardButtonRef = useRef(null);
-  const downloadButtonRef = useRef(null);
-  const sliderRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  useEffect(() => {
-    const multitrack = Multitrack.create(
-      [
-        {
-          id: 1,
-          draggable: true,
-          startPosition: 14,
-          url: lofi,
-          envelope: [
-            { time: 2, volume: 0.5 },
-            { time: 10, volume: 0.8 },
-            { time: 255, volume: 0.8 },
-            { time: 264, volume: 0 },
-          ],
-          volume: 0.95,
-          options: {
-            waveColor: 'hsl(46, 87%, 49%)',
-            progressColor: 'hsl(46, 87%, 20%)',
-          },
-          intro: {
-            endTime: 16,
-            label: 'Intro',
-            color: '#FFE56E',
-          },
-          markers: [
+        playlist.load([
             {
-              time: 21,
-              label: 'M1',
-              color: 'hsla(600, 100%, 30%, 0.5)',
+                src: lofi,
+                name: "Vocals",
+                gain: 0.5,
             },
             {
-              time: 22.7,
-              label: 'M2',
-              color: 'hsla(400, 100%, 30%, 0.5)',
+                src: lofi,
+                name: "Vocals",
+                gain: 0.5,
             },
             {
-              time: 24,
-              label: 'M3',
-              color: 'hsla(200, 50%, 70%, 0.5)',
+                src: lofi,
+                name: "Vocals",
+                gain: 0.5,
             },
             {
-              time: 27,
-              label: 'M4',
-              color: 'hsla(200, 50%, 70%, 0.5)',
+                src: lofi,
+                name: "Vocals",
+                gain: 0.5,
             },
-          ],
-        },
-        {
-          id: 2,
-          draggable: true,
-          startPosition: 1,
-          startCue: 2.1,
-          endCue: 20,
-          fadeInEnd: 8,
-          fadeOutStart: 14,
-          envelope: true,
-          volume: 0.8,
-          options: {
-            waveColor: 'hsl(161, 87%, 49%)',
-            progressColor: 'hsl(161, 87%, 20%)',
-          },
-          url: lofi,
-        },
-        {
-          id: 3,
-          draggable: true,
-          startPosition: 290,
-          volume: 0.8,
-          options: {
-            waveColor: 'hsl(161, 87%, 49%)',
-            progressColor: 'hsl(161, 87%, 20%)',
-          },
-          url: lofi,
-        },
-      ],
-      {
-        container: containerRef.current, // required!
-        minPxPerSec: 10, // zoom level
-        rightButtonDrag: false, // set to true to drag with right mouse button
-        cursorWidth: 2,
-        cursorColor: '#D72F21',
-        trackBackground: '#2D2D2D',
-        trackBorderColor: '#7C7C7C',
-        dragBounds: true,
-        envelopeOptions: {
-          lineColor: 'rgba(255, 0, 0, 0.7)',
-          lineWidth: 4,
-          dragPointSize: window.innerWidth < 600 ? 20 : 10,
-          dragPointFill: 'rgba(255, 255, 255, 0.8)',
-          dragPointStroke: 'rgba(255, 255, 255, 0.3)',
-        },
-      }
+            {
+                src: lofi,
+                name: "Vocals",
+                gain: 0.5,
+            },
+            {
+                src: lofi,
+                name: "Vocals",
+                gain: 0.5,
+            },
+            {
+                src: lofi,
+                name: "Vocals",
+                gain: 0.5,
+            },
+            {
+                src: lofi,
+                name: "Vocals",
+                gain: 0.5,
+            },
+            {
+                src: lofi,
+                name: "Vocals",
+                gain: 0.5,
+            },
+            {
+                src: lofibass,
+                name: "Drums",
+                fadeIn: {
+                    duration: 0.5,
+                },
+                fadeOut: {
+                    shape: "logarithmic",
+                    duration: 0.5,
+                },
+            },
+        ]).then(() => {
+            playlist.initExporter();
+            const ee = playlist.getEventEmitter();
+
+            refs.current.playButton.onclick = async () => {
+                if (isPlayingRef.current) {
+                    isPlayingRef.current = false;
+                    setIsPlaying(false);
+                    ee.emit("pause");
+                } else {
+                    isPlayingRef.current = true;
+                    setIsPlaying(true);
+                    ee.emit("play");
+                }
+            };
+
+            refs.current.downloadButton.onclick = async () => {
+                ee.emit('startaudiorendering', 'wav');
+            };
+
+            // refs.current.forwardButton.onclick = () => {};
+            // refs.current.backwardButton.onclick = () => {};
+        });
+    }, []);
+
+    return (
+        <Dashboard>
+            <section className='flex flex-col md:flex-row w-full min-h-[calc(100vh-96px)]'>
+                <aside className="w-full py-5 md:w-96">
+                    <div className='w-full h-full rounded-xl'>
+                        <div className='flex flex-col w-full p-3 mb-3 bg-white border border-gray-300 h-1/2 rounded-xl'>
+                            <div className='flex flex-col h-full pt-3 mb-2'>
+                                <p className='p-3 mb-5 text-white rounded-tl-3xl rounded-bl-3xl rounded-br-3xl bg-[#F1817B] w-fit'>
+                                    A grand orchestral arrangement with thunderous percussion, epic brass fanfares, and soaring strings, creating a cinematic atmosphere fit for a heroic battle.
+                                </p>
+                                <p className='p-3 text-[#2C3244] bg-[#F4F5FC] rounded-tl-none rounded-tr-3xl rounded-bl-3xl rounded-br-3xl w-fit'>
+                                    Sure!
+                                </p>
+                            </div>
+                            <Divider className='mb-3' />
+                            <div className="flex">
+                                <Input placeholder='Describe la canción de tus seños' />
+                                <Tooltip content="Pedir una nueva pista" placement='right'>
+                                    <Button className='ml-3' variant='bordered'><CiChat1 /></Button>
+                                </Tooltip>
+                            </div>
+                        </div>
+                        <div className='w-full mt-3 overflow-hidden bg-white border border-gray-300 h-1/2 rounded-xl'>
+                            <div>
+                                <div className='flex items-center p-3 pl-5'>
+                                    <CiFolderOn className="mr-2 text-2xl" />
+                                    <span className='font-semibold'>Recursos</span>
+                                </div>
+                                <Divider className='mb-3' />
+                            </div>
+                            <div className='flex flex-col h-full'>
+                                <div className='flex items-center py-3 pl-3 mb-1 hover:bg-gray-100'>
+                                    <CiFileOn className='mr-2 text-xl' />
+                                    <span>La macarena.mp3</span>
+                                </div>
+                                <div className='flex items-center py-3 pl-3 mb-1 hover:bg-gray-100'>
+                                    <CiFileOn className='mr-2 text-xl' />
+                                    <span>La macarena.mp3</span>
+                                </div>
+                                <div className='flex items-center py-3 pl-3 mb-1 hover:bg-gray-100'>
+                                    <CiFileOn className='mr-2 text-xl' />
+                                    <span>La macarena.mp3</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <div className='w-full h-[calc(100vh-105px)] md:pt-5 md:pr-3'>
+                    <div className='w-full h-full p-5 bg-white border border-gray-300 md:ml-3 rounded-xl grid grid-rows-[1fr_10px_50px] overflow-hidden'>
+                        <div className='row-start-1 overflow-scroll'>
+                            <div id="container" ref={el => refs.current.container = el} />
+                        </div>
+                        <Divider className='row-start-2 my-3' />
+                        <div className='flex items-center justify-between row-start-3'>
+                            <div className='flex items-center'>
+                                <Tooltip content="Retroceder 30s">
+                                    <button id="backward" ref={el => refs.current.backwardButton = el}>
+                                        <RiArrowGoBackFill />
+                                    </button>
+                                </Tooltip>
+                                <Tooltip content={isPlaying ? 'Pause' : 'Play'}>
+                                    <button id="play" ref={el => refs.current.playButton = el}>
+                                        {isPlaying ? <CiPause1 className='text-xl' /> : <img className='h-7' src={logoSrc} alt='' />}
+                                    </button>
+                                </Tooltip>
+                                <Tooltip content="Avanzar 30s">
+                                    <button id="forward" ref={el => refs.current.forwardButton = el}>
+                                        <RiArrowGoBackFill className='transform scale-x-[-1]' />
+                                    </button>
+                                </Tooltip>
+                            </div>
+                            <Tooltip content="Descargar">
+                                <button id="download" ref={el => refs.current.downloadButton = el}>
+                                    <PiDownloadSimple className='text-2xl' />
+                                </button>
+                            </Tooltip>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </Dashboard>
     );
-    console.log(multitrack);
+};
 
-    multitrack.on('drop', ({ id }) => {
-      multitrack.addTrack({
-        id,
-        url: '/examples/audio/demo.wav',
-        startPosition: 0,
-        draggable: true,
-        options: {
-          waveColor: 'hsl(25, 87%, 49%)',
-          progressColor: 'hsl(25, 87%, 20%)',
-        },
-      });
-    });
-
-    // Play/pause button
-    const playButton = playButtonRef.current;
-    playButton.disabled = true;
-    multitrack.once('canplay', () => {
-      playButton.disabled = false;
-      playButton.onclick = () => {
-        if (multitrack.isPlaying()) {
-          multitrack.pause();
-          setIsPlaying(false);
-        } else {
-          multitrack.play();
-          setIsPlaying(true);
-        }
-      };
-    });
-
-    // Forward/back buttons
-    forwardButtonRef.current.onclick = () => {
-      multitrack.setTime(multitrack.getCurrentTime() + 30);
-    };
-    backwardButtonRef.current.onclick = () => {
-      multitrack.setTime(multitrack.getCurrentTime() - 30);
-    };
-
-    // Zoom
-    sliderRef.current.oninput = () => {
-      multitrack.zoom(sliderRef.current.valueAsNumber);
-    };
-
-    // Set sinkId
-    multitrack.once('canplay', async () => {
-      await multitrack.setSinkId('default');
-      console.log('Set sinkId to default');
-    });
-
-    downloadButtonRef.current.onclick = async () => {
-    };
-
-    return () => {
-      multitrack.destroy();
-    };
-  }, []);
-
-
-  return (
-    <Dashboard>
-      <div id="container" ref={containerRef}></div>
-      <button id="play" ref={playButtonRef}>{isPlaying ? 'Pause' : 'Play'}</button>
-      <button id="forward" ref={forwardButtonRef}>Forward 30s</button>
-      <button id="backward" ref={backwardButtonRef}>Backward 30s</button>
-      <input type="range" ref={sliderRef} min="1" max="100" defaultValue="10" />
-      <button id="download" ref={downloadButtonRef}>Download</button>
-    </Dashboard>
-  )
-}
-
-export default SongLab
+export default SongLab;
