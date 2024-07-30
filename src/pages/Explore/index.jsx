@@ -21,7 +21,7 @@ import {
 import { motion } from 'framer-motion';
 
 
-import Dashboard from "@pages/Dashboard";
+import Dashboard from "@components/Dashboard";
 
 const rows = [
     {
@@ -566,15 +566,6 @@ const Explore = () => {
                             <Card as={motion.div} layout transition={{ duration: 0.3 }}>
                                 <CardBody>
                                     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                </CardBody>
-                            </Card>
-                        </Tab>
-                        <Tab key="albums" title="Albums">
-                            <Card as={motion.div} layout transition={{ duration: 0.3 }}>
-                                <CardBody>
-                                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorum rerum vel corporis quia, saepe quas adipisci sequi enim culpa in accusamus voluptatum. Ipsam amet labore ut vero, maxime quae tempora.
-                                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Qui rem doloribus, eos reprehenderit aspernatur vitae vel, atque, minima ut totam dolorem beatae quasi veniam ab itaque ea autem vero veritatis.
                                 </CardBody>
                             </Card>
                         </Tab>

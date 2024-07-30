@@ -1,22 +1,28 @@
-const SidebarItem = () => (
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+/**
+ * @param {string} label - The label of the sidebar item.
+ * @param {string} path - The path to navigate to when the item is clicked.
+ * @param {React.ReactNode} icon - The icon to display alongside the label.
+ * @returns {JSX.Element} The rendered sidebar item component.
+ */
+const SidebarItem = ({ label, path, icon }) => (
     <li>
-        <a
-            href="#"
+        <Link
+            to={path}
             className="flex items-center p-2 text-base font-thin text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
         >
-            <svg
-                aria-hidden="true"
-                className="w-6 h-6 text-black transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-            </svg>
-            <span className="ml-3">Overview</span>
-        </a>
+            {icon}
+            <span className="ml-3">{label}</span>
+        </Link>
     </li>
 )
+
+SidebarItem.propTypes = {
+    label: PropTypes.string.isRequired,
+    path: PropTypes.string.isRequired,
+    icon: PropTypes.node
+}
 
 export default SidebarItem
