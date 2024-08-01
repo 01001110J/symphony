@@ -7,7 +7,9 @@ import App from '@components/App'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
     <NextUIProvider>
       <App />
     </NextUIProvider>
+  </React.StrictMode>
 )
