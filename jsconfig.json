@@ -10,7 +10,7 @@
       "@constants": ["./src/constants/*"],
       "@config": ["./src/config/*"],
       "@layouts": ["./src/layouts/*"],
-      "@context": ["./src/context/*"],
+      "@context": ["./src/context/*"]
     }
   }
 }
