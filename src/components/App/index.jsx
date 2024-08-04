@@ -1,7 +1,12 @@
-import Router from '@components/Router'
+import Router from '@components/Router';
+import DarkThemeProvider from '@context/DarkTheme';
 
-import './App.css'
+import './App.css';
 
-const App = () => <Router />
+const App = () => (
+  <DarkThemeProvider>
+    <Router />
+  </DarkThemeProvider>
+);
 
-export default App
+export default App;

@@ -1,9 +1,7 @@
-import Dashboard from '@components/Dashboard'
+import Container from '@src/layouts/Container';
 
 const About = () => {
-  return (
-    <Dashboard>About</Dashboard>
-  )
-}
+  return <Container>About</Container>;
+};
 
-export default About
+export default About;

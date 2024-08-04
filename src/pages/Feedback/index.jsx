@@ -1,9 +1,7 @@
-import Dashboard from '@components/Dashboard'
+import Container from '@src/layouts/Container';
 
 const Feedback = () => {
-  return (
-    <Dashboard>Feedback</Dashboard>
-  )
-}
+  return <Container>Feedback</Container>;
+};
 
-export default Feedback
+export default Feedback;

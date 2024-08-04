@@ -1,9 +1,7 @@
-import Dashboard from '@components/Dashboard'
+import Container from '@src/layouts/Container';
 
 const Playlist = () => {
-    return (
-        <Dashboard>Playlist</Dashboard>
-    )
-}
+  return <Container>Playlist</Container>;
+};
 
-export default Playlist
+export default Playlist;

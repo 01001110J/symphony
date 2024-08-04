@@ -1,3 +1,88 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.back-gradient {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 2%, rgb(0 0 0 / 0%) 100%);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeInSongs {
+  from {
+    opacity: 0;
+    transform: scale(1.1) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeInSongs 0.5s ease-out;
+}
+
+.ant-tabs-content {
+  min-height: 772px !important;
+}
+
+.glass-morph {
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.music-list-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.music-list-container:hover .music-item {
+  animation-play-state: paused;
+}
+
+.music-item {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 100%;
+  bottom: -175;
+  padding: 10px;
+  animation: moveUp 10s linear infinite;
+  animation-delay: calc(((60s / 30) * (var(--position) - 1)));
+}
+
+@keyframes moveUp {
+  from {
+    bottom: -175px;
+  }
+  to {
+    bottom: 100%;
+  }
+}
+
+.channel-wrapper-full {
+  height: 100% !important;
+}
+.channel-wrapper-half {
+  height: 50% !important;
+}
+.custom-track-height {
+  height: 500px !important;
+}
