@@ -58,9 +58,8 @@ const SongForm = () => {
       {items.map((item) => (
         <Button
           key={item.id}
-          className={`w-full h-full flex items-center justify-center text-orange-300 border-2 border-orange-300 ${
-            selected.includes(item.name) ? 'bg-orange-300 text-white' : ''
-          }`}
+          className={`w-full h-full flex items-center justify-center text-orange-300 border-2 border-orange-300 ${selected.includes(item.name) ? 'bg-orange-300 text-white' : ''
+            }`}
           style={{ gridArea: item.gridArea }}
           onClick={() => handleButtonClick(item.name, setSelected)}
         >
@@ -119,33 +118,13 @@ const SongForm = () => {
               <p className="text-sm font-normal py-2.5 text-gray-900 dark:text-white">Of course, here is the result.</p>
             </div>
           </div>
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
-          <MusicItem />
+          <MusicItem
+            songUrl="https://ai.honu.io/papers/musicgen/samples/musicgen/015_sample.mp3"
+            title="Echoes of Emotion"
+            userName="Sam Sepiol"
+            tags={['rock']}
+            changeSize={false}
+          />
         </div>
         {/* Fin chat */}
         <div className="row-start-3 place-content-center">
