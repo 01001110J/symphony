@@ -3,28 +3,41 @@ import { Tag, Tooltip, Button } from 'antd';
 import PropTypes from 'prop-types';
 
 import { CiPause1 } from 'react-icons/ci';
-import { RxTrackNext } from 'react-icons/rx';
+import { BsDownload } from "react-icons/bs";
+
 
 import playLogo from '@assets/logo-white.svg';
 
 const MusicItemSkeleton = () => (
   <article className="w-[90%] mb-4 rounded-xl bg-gray-300 p-0.5 shadow-xl animate-pulse">
-    <div className="rounded-[10px] bg-white p-4 sm:p-6 dark:bg-slate-950">
+    <div className="rounded-[10px] bg-white p-4 sm:p-4 dark:bg-slate-950 relative">
+    <div className="absolute w-8 h-6 mb-1 bg-gray-300 rounded top-2 right-3" />
       <div className="w-3/4 h-6 mb-2 bg-gray-300 rounded"></div>
       <div className="w-1/4 h-4 mb-4 bg-gray-300 rounded"></div>
       <div className="flex items-end justify-between h-fit">
         <div className="flex flex-wrap gap-1 mt-4">
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className="w-16 h-6 mb-1 bg-gray-300 rounded"></div>
-          ))}
+          <div className="w-16 h-6 mb-1 bg-gray-300 rounded" />
         </div>
-        <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
+        <div className="flex gap-3">
+          <div className="w-16 h-6 mb-1 bg-gray-300 rounded" />
+          <div className="w-16 h-6 mb-1 bg-gray-300 rounded" />
+          <div className="w-16 h-6 mb-1 bg-gray-300 rounded" />
+        </div>
       </div>
     </div>
   </article>
 );
 
-const MusicItem = ({ songUrl, title, userName, tags, changeSize, loading, onPlayNext, showContinueButton }) => {
+const MusicItem = ({
+  songUrl,
+  title,
+  userName,
+  tags,
+  onPlayNext,
+  changeSize = true,
+  loading = false,
+  showContinueButton = true
+}) => {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -59,16 +72,23 @@ const MusicItem = ({ songUrl, title, userName, tags, changeSize, loading, onPlay
               </Tag>
             ))}
           </div>
-          <div className="flex">
+          <div className="flex items-end">
+            <Tooltip title="Descargar canción">
+              <a className='flex items-end mr-4' href={songUrl} download={`${title}-symphony.wav`}>
+                <Button className="text-white h-[22px]">
+                  <BsDownload />
+                </Button>
+              </a>
+            </Tooltip>
             <Tooltip title={isPlaying ? 'Pause' : 'Play'}>
-              <Button onClick={toggleAudio} className="text-white">
-                {isPlaying ? <CiPause1 /> : <img src={playLogo} alt="" />}
+              <Button onClick={toggleAudio} className="text-white h-[22px]">
+                {isPlaying ? <CiPause1 /> : <img src={playLogo} alt="" className='h-full' />}
               </Button>
             </Tooltip>
             {showContinueButton && (
               <Tooltip title="Al continuar con este audio se generará un nuevo proyecto">
                 <Button
-                  className="ml-4 text-white"
+                  className="ml-4 text-white h-[22px]"
                   onClick={() =>
                     onPlayNext({
                       name: title,
@@ -76,7 +96,7 @@ const MusicItem = ({ songUrl, title, userName, tags, changeSize, loading, onPlay
                     })
                   }
                 >
-                  <RxTrackNext />
+                  Crear una pieza compleja
                 </Button>
               </Tooltip>
             )}
@@ -96,12 +116,6 @@ MusicItem.propTypes = {
   loading: PropTypes.bool,
   onPlayNext: PropTypes.func,
   showContinueButton: PropTypes.bool,
-};
-
-MusicItem.defaultProps = {
-  changeSize: true,
-  loading: false,
-  showContinueButton: true,
 };
 
 export default MusicItem;
