@@ -11,7 +11,7 @@
     "format": "prettier --write ./**/*.{js,jsx,ts,tsx,css,md,json} --config ./.prettierrc.json"
   },
   "dependencies": {
-    "@huggingface/inference": "2.8.0",
+    "@ai-sdk/openai": "0.0.40",
     "@nextui-org/react": "2.4.6",
     "@wavesurfer/react": "1.0.7",
     "ai": "3.2.37",
@@ -22,6 +22,7 @@
     "react-dom": "18.3.1",
     "react-icons": "5.2.1",
     "react-router-dom": "6.25.1",
+    "uuid": "10.0.0",
     "waveform-playlist": "4.3.3"
   },
   "devDependencies": {

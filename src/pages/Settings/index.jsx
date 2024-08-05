@@ -1,43 +1,25 @@
-import { useState, useEffect, useContext } from 'react';
-import { Form, Input, Tag, Switch, Divider, Typography } from 'antd';
+import { useContext } from 'react';
+import { Form, Input, Tag, Switch, Divider, Typography, Button, Popconfirm } from 'antd';
 
 import { DarkThemeContext } from '@context/DarkTheme';
-// import { isValidHFToken } from '@helpers';
-import { HUGGING_FACE_LOCAL_STORAGE_TOKEN } from '@constants';
+import { TokenContext } from '@context/Tokens';
 
 const { Title, Text } = Typography;
 
 const Settings = () => {
   const { isDarkMode, toggleDarkTheme } = useContext(DarkThemeContext);
-  const [, setHasHuggingToken] = useState(false);
-  const [huggingInput, setHuggingInput] = useState({
-    value: '',
-    error: false,
-    message: '',
-  });
-
-  /* const saveHuggingFaceToken = () => {
-    const isTokenValid = isValidHFToken(huggingInput.value)
-
-    if (!isTokenValid) {
-      return setHuggingInput({
-        ...huggingInput,
-        error: true,
-        message: 'El token proporcionado no es valido, por favor verifícalo he intenta nuevamente.'
-      })
-    }
-
-    localStorage.setItem(HUGGING_FACE_LOCAL_STORAGE_TOKEN, huggingInput);
-    setHasHuggingToken(true)
-  } */
-
-  useEffect(() => {
-    const hasHuggingFaceToken = localStorage.getItem(HUGGING_FACE_LOCAL_STORAGE_TOKEN);
-
-    if (hasHuggingFaceToken) {
-      setHasHuggingToken(true);
-    }
-  }, []);
+  const {
+    hasHuggingToken,
+    huggingInput,
+    perplexityInput,
+    hasPerplexityToken,
+    setHuggingInput,
+    saveHuggingFaceToken,
+    deleteHuggingFaceToken,
+    setPerplexityInput,
+    savePerplexityToken,
+    deletePerplexityFaceToken,
+  } = useContext(TokenContext);
 
   return (
     <section className="w-full ant-tabs-content">
@@ -60,13 +42,15 @@ const Settings = () => {
           </Tag>{' '}
           en tu navegador, puedes borrarlo en cualquier momento.
         </Text>
-        <Form className="max-w-[400px] w-full mt-3">
+        <Form className="w-full mt-3 h-fit">
           <Form.Item
+            className="flex items-center w-full h-fit"
             validateStatus={huggingInput.error ? 'error' : ''}
             help={huggingInput.error ? huggingInput.message : ''}
           >
             <Input
               autoFocus
+              disabled={hasHuggingToken}
               type="text"
               placeholder="Hugging face token"
               value={huggingInput.value}
@@ -77,6 +61,80 @@ const Settings = () => {
                 })
               }
             />
+            {!hasHuggingToken ? (
+              <Button onClick={saveHuggingFaceToken} disabled={huggingInput.value.length < 10} className="w-full mt-3">
+                Guardar
+              </Button>
+            ) : (
+              <Popconfirm
+                title="Eliminar HG token."
+                description="¿Estas seguro de eliminar este token? No podrás generar canciones él."
+                onConfirm={deleteHuggingFaceToken}
+                onCancel={() => null}
+                okText="Sí"
+                cancelText="No"
+              >
+                <Button danger className="w-full mt-3">
+                  <img src="/audio-delete.svg" alt="" />
+                </Button>
+              </Popconfirm>
+            )}
+          </Form.Item>
+        </Form>
+        <Divider />
+        <Title level={3}>Perplexity API</Title>
+        <Text className="mb-3">
+          Este token te servirá para crear los
+          <Tag color="orange" className="mx-1">
+            títulos
+          </Tag>
+          de las canciones, no te preocupes, este se guarda{' '}
+          <Tag color="orange" className="mx-0">
+            localmente
+          </Tag>{' '}
+          en tu navegador, puedes borrarlo en cualquier momento.
+        </Text>
+        <Form className="mt-5">
+          <Form.Item
+            className="flex items-center w-full h-fit"
+            validateStatus={perplexityInput.error ? 'error' : ''}
+            help={perplexityInput.error ? perplexityInput.message : ''}
+          >
+            <Input
+              autoFocus
+              disabled={hasPerplexityToken}
+              type="text"
+              placeholder="Perplexity token"
+              value={perplexityInput.value}
+              onChange={(e) =>
+                setPerplexityInput({
+                  ...perplexityInput,
+                  value: e.target.value,
+                })
+              }
+            />
+            {!hasPerplexityToken ? (
+              <Button
+                onClick={savePerplexityToken}
+                disabled={perplexityInput.value.length < 10}
+                className="w-full mt-3"
+              >
+                Guardar
+              </Button>
+            ) : (
+              <Popconfirm
+                title="Eliminar Perplexity token."
+                description="¿Estas seguro de eliminar este token? No podrás generar canciones él."
+                onConfirm={deletePerplexityFaceToken}
+                onCancel={() => null}
+                okText="Sí"
+                cancelText="No"
+              >
+                <Button danger className="w-full mt-3">
+                  <img src="/audio-delete.svg" alt="" />
+                </Button>
+              </Popconfirm>
+            )}
           </Form.Item>
         </Form>
       </div>

@@ -1,11 +1,14 @@
 import Router from '@components/Router';
 import DarkThemeProvider from '@context/DarkTheme';
+import TokensProvider from '@context/Tokens';
 
 import './App.css';
 
 const App = () => (
   <DarkThemeProvider>
-    <Router />
+    <TokensProvider>
+      <Router />
+    </TokensProvider>
   </DarkThemeProvider>
 );
 

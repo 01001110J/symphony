@@ -7,6 +7,8 @@ import SongLab from '@pages/SongLab';
 import Playlist from '@pages/Playlist';
 import Feedback from '@pages/Feedback';
 
+import SongProvider from '@context/Song';
+
 import NotFound from '@pages/NotFound';
 
 const router = createBrowserRouter([
@@ -20,7 +22,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/song/new',
-    element: <SongLab />,
+    element: (
+      <SongProvider>
+        <SongLab />
+      </SongProvider>
+    ),
   },
   {
     path: '/liked-songs',

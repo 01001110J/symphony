@@ -1,13 +1,16 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useContext } from 'react';
 import WaveformPlaylist from 'waveform-playlist';
-import { Tooltip, Divider, Tabs } from 'antd';
-import { CiFolderOn, CiFileOn, CiPause1 } from 'react-icons/ci';
+import { Tooltip, Divider, Tabs, Tree, Popconfirm, Button } from 'antd';
+import { CiFolderOn, CiPause1 } from 'react-icons/ci';
+import { BsFileEarmarkMusic } from 'react-icons/bs';
+
 // import { RxTrackNext, RxTrackPrevious } from "react-icons/rx";
 import { RiArrowGoBackFill } from 'react-icons/ri';
 import { PiDownloadSimple } from 'react-icons/pi';
 
 // import { getAuth } from "firebase/auth";
 import Header from '@components/Header';
+import { SongContext } from '@context/Song';
 import { getDatabase, ref as dbRef, set } from 'firebase/database';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
@@ -58,35 +61,48 @@ const Composer = () => (
   </div>
 );
 
-const Resources = () => (
-  <aside className="w-full py-5 md:w-96">
-    <div className="w-full h-full rounded-xl">
-      <div className="w-full mt-3 overflow-hidden bg-white border border-gray-300 h-1/2 rounded-xl">
-        <div>
-          <div className="flex items-center p-3 pl-5">
-            <CiFolderOn className="mr-2 text-2xl" />
-            <span className="font-semibold">Recursos</span>
-          </div>
-          <Divider className="mb-3" />
-        </div>
-        <div className="flex flex-col h-full">
-          <div className="flex items-center py-3 pl-3 mb-1 hover:bg-gray-100">
-            <CiFileOn className="mr-2 text-xl" />
-            <span>La macarena.mp3</span>
-          </div>
-          <div className="flex items-center py-3 pl-3 mb-1 hover:bg-gray-100">
-            <CiFileOn className="mr-2 text-xl" />
-            <span>La macarena.mp3</span>
-          </div>
-          <div className="flex items-center py-3 pl-3 mb-1 hover:bg-gray-100">
-            <CiFileOn className="mr-2 text-xl" />
-            <span>La macarena.mp3</span>
-          </div>
-        </div>
-      </div>
+const Resources = () => {
+  const { songList, handleRemoveTrack } = useContext(SongContext);
+
+  // eslint-disable-next-line react/prop-types
+  const ResourceItem = ({ name, url, onConfirm }) => (
+    <div className="flex items-center w-full">
+      <BsFileEarmarkMusic className="mt-1" />
+      <span className="px-3 ml-5 mr-10">{name}</span>
+      <Popconfirm
+        title="Eliminar canción."
+        description="¿Estas seguro de eliminar esta canción?"
+        onConfirm={() => onConfirm(url)}
+        onCancel={() => null}
+        okText="Sí"
+        cancelText="No"
+      >
+        <Button danger>
+          <img src="/audio-delete.svg" alt="" />
+        </Button>
+      </Popconfirm>
     </div>
-  </aside>
-);
+  );
+
+  const songResources = songList.map(({ name, url }) => ({
+    title: <ResourceItem name={name} url={url} onConfirm={handleRemoveTrack} />,
+    key: `0-0-${name}}`,
+  }));
+
+  const treeData = [
+    {
+      title: 'Recursos usados en este proyecto',
+      key: '0-0',
+      icon: <CiFolderOn className="mt-1 text-lg" />,
+      children: songResources,
+    },
+  ];
+  return (
+    <aside className="flex flex-col flex-1 h-full row-start-2 px-1 overflow-x-hidden overflow-y-auto ant-tabs-content">
+      <Tree showIcon defaultExpandAll defaultSelectedKeys={['0-0-2']} treeData={treeData} />
+    </aside>
+  );
+};
 
 const items = [
   {
@@ -102,6 +118,7 @@ const items = [
 ];
 
 const Editor = () => {
+  const { songList } = useContext(SongContext);
   const storage = getStorage();
   const db = getDatabase();
   // const auth = getAuth();
@@ -115,7 +132,7 @@ const Editor = () => {
   });
   const isPlayingRef = useRef(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [donwloadLink, setDonwloadLink] = useState(null);
+  const [, setDownloadLink] = useState(null);
   const [playlist, setPlaylist] = useState(undefined);
 
   useEffect(() => {
@@ -137,79 +154,75 @@ const Editor = () => {
   }, []);
 
   useEffect(() => {
-    playlist
-      ?.load([
-        {
-          src: lofi,
-          name: 'Vocals',
-          gain: 0.5,
-        },
-        {
-          src: lofi,
-          name: 'F',
-          gain: 0.5,
-        },
-      ])
-      .then(() => {
-        playlist.initExporter();
-        const ee = playlist.getEventEmitter();
+    const songTracks = songList.map(({ name, url }) => ({
+      gain: 0.5,
+      name,
+      src: url,
+    }));
 
-        refs.current.playButton.onclick = async () => {
-          if (isPlayingRef.current) {
-            isPlayingRef.current = false;
-            setIsPlaying(false);
-            ee.emit('pause');
-          } else {
-            isPlayingRef.current = true;
-            setIsPlaying(true);
-            ee.emit('play');
+    playlist?.load(songTracks).then(() => {
+      playlist.initExporter();
+      const ee = playlist.getEventEmitter();
+
+      refs.current.playButton.onclick = async () => {
+        if (isPlayingRef.current) {
+          isPlayingRef.current = false;
+          setIsPlaying(false);
+          ee.emit('pause');
+        } else {
+          isPlayingRef.current = true;
+          setIsPlaying(true);
+          ee.emit('play');
+        }
+      };
+
+      refs.current.downloadButton.onclick = async () => {
+        function displayDownloadLink(link) {
+          var dateString = new Date().toISOString();
+          var $link = 'waveformplaylist' + dateString + '.wav';
+
+          console.log(link, $link);
+          setDownloadLink(link);
+        }
+
+        ee.emit('startaudiorendering', 'wav');
+
+        ee.on('audiorenderingfinished', async function (_, data) {
+          const storageRef = ref(storage, 'audio-files/' + Date.now() + '.wav');
+
+          try {
+            await uploadBytes(storageRef, data);
+            const downloadUrl = await getDownloadURL(storageRef);
+
+            const newSongRef = dbRef(db, 'songs/' + Date.now());
+            await set(newSongRef, {
+              user: 'sources',
+              url: downloadUrl,
+              description: 'rock with saturated guitars, a heavy bass line and crazy drum break and fills.',
+            });
+
+            displayDownloadLink(downloadUrl);
+          } catch (error) {
+            console.error('Error uploading file:', error);
           }
-        };
+        });
+      };
 
-        refs.current.downloadButton.onclick = async () => {
-          function displayDownloadLink(link) {
-            var dateString = new Date().toISOString();
-            var $link = 'waveformplaylist' + dateString + '.wav';
-
-            console.log(link, $link);
-            setDonwloadLink(link);
-          }
-
-          ee.emit('startaudiorendering', 'wav');
-
-          ee.on('audiorenderingfinished', async function (_, data) {
-            const storageRef = ref(storage, 'audio-files/' + Date.now() + '.wav');
-
-            try {
-              await uploadBytes(storageRef, data);
-              const downloadUrl = await getDownloadURL(storageRef);
-
-              const newSongRef = dbRef(db, 'canciones/' + Date.now());
-              await set(newSongRef, {
-                usuario: 'sources',
-                cancion: downloadUrl,
-                descripcion:
-                  'Pop dance track with catchy melodies, tropical percussion, and upbeat rhythms, perfect for the beach',
-              });
-
-              displayDownloadLink(downloadUrl);
-            } catch (error) {
-              console.error('Error uploading file:', error);
-            }
-          });
-        };
-
-        // refs.current.forwardButton.onclick = () => {};
-        // refs.current.backwardButton.onclick = () => {};
-      });
+      // refs.current.forwardButton.onclick = () => {};
+      // refs.current.backwardButton.onclick = () => {};
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playlist]);
 
   return (
     <div className="w-full h-[calc(100vh-105px)] md:pt-5 md:pr-3">
-      <div className="w-full h-full p-5 bg-white border border-gray-300 md:ml-3 rounded-xl grid grid-rows-[1fr_10px_50px] overflow-hidden">
-        <div className="row-start-1 overflow-scroll">
-          <div id="container" ref={(el) => (refs.current.container = el)} />
+      <div className="w-full h-full p-5 md:ml-3 grid grid-rows-[1fr_10px_50px] overflow-hidden">
+        <div className="flex flex-col row-start-1">
+          <h1 className="text-3xl text-white">Pistas</h1>
+          <Divider className="my-3 mt-2" />
+          <div className="overflow-x-hidden">
+            <div id="container" ref={(el) => (refs.current.container = el)} />
+          </div>
         </div>
         <Divider className="row-start-2 my-3" />
         <div className="flex items-center justify-between row-start-3">
@@ -243,11 +256,10 @@ const Editor = () => {
 
 const SongEditor = () => {
   return (
-    <section className="flex flex-col w-full min-h-[calc(100vh-96px)]">
+    <section className="flex flex-col w-full min-h-[calc(100vh-96px)] px-5">
       <Header />
-      <div className="flex flex-col px-5 md:flex-row">
-        <Tabs defaultActiveKey="1" className="w-full md:w-[500px]" items={items} />
-
+      <div className="flex flex-col px-5 md:flex-row bg-[#1e293b99] rounded-xl">
+        <Tabs defaultActiveKey="1" className="w-full md:w-[500px] pt-10" items={items} />
         <Editor />
       </div>
     </section>
