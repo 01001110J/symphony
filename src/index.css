@@ -77,12 +77,18 @@
   }
 }
 
-.channel-wrapper-full {
-  height: 100% !important;
+.ant-tabs {
+  height: 100%;
 }
-.channel-wrapper-half {
-  height: 50% !important;
+
+.ant-tabs-tabpane-active {
+  height: 100%;
 }
-.custom-track-height {
-  height: 500px !important;
+
+.ant-tabs-content-holder {
+  display: flex;
+}
+
+.category-bg-cover {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.773546918767507) 0%, rgba(0, 0, 0, 0.05085784313725494) 100%);
 }

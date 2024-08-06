@@ -17,7 +17,6 @@ const suggestionOptions = [
   'lofi slow bpm electro chill with organic samples',
   'classic reggae track with an electronic guitar solo',
   'drum and bass beat with intense percussions',
-  'a light and cheerly EDM track, with syncopated drums, aery pads, and strong emotions',
   '80s electronic track with melodic synthesizers, catchy beat and groovy bass',
 ];
 
@@ -83,17 +82,19 @@ const SongForm = () => {
     <section className="flex flex-col flex-wrap h-[calc(100vh-130px)] p-5 lg:flex-row pt-0">
       <Header />
       <Divider className="mt-0" />
-      <div className="grid grid-rows-[70px_1fr_auto] flex-1 overflow-hidden rounded-lg glass-morph bg-[url(/bg-blue.svg)] bg-cover bg-[24%_140px] bg-no-repeat h-full">
+      <div className="w-full grid grid-rows-[70px_1fr_auto] flex-1 overflow-hidden rounded-lg glass-morph bg-[url(/bg-blue.svg)] bg-cover bg-[24%_140px] bg-no-repeat h-full">
         <div className="row-start-1 p-5">
-          <h3 className="text-2xl text-white">Prompt</h3>
+          <h3 className="text-2xl dark:text-white">Prompt</h3>
           <Divider className="mt-5" />
         </div>
         {hasHuggingToken ? (
           <>
             <div
-              className={`flex flex-col flex-1 row-start-2 px-5 pt-6 overflow-x-hidden overflow-y-auto ${promptMessages.length === 0 && 'grid place-content-center'}`}
+              className={`w-full flex flex-col flex-1 row-start-2 px-5 pt-6 overflow-x-hidden overflow-y-auto ${promptMessages.length === 0 && 'grid place-content-center'}`}
             >
-              {promptMessages.length === 0 && <Empty description="Envía un prompt para comenzar a crear." />}
+              {promptMessages.length === 0 && (
+                <Empty description="Envía un prompt para comenzar a crear." className="w-full" />
+              )}
 
               {promptMessages.map((message) => {
                 if (message.type === 'message') {
@@ -115,9 +116,12 @@ const SongForm = () => {
                       {message.loading && (
                         <div className="flex mb-5">
                           <Spin size="large" />
-                          <span className="ml-5 text-white">Creando canción... Esto toma en promedio 30s.</span>
+                          <span className="ml-5 dark:text-white text-custom">
+                            Creando canción... Esto toma en promedio 30s.
+                          </span>
                         </div>
                       )}
+
                       <MusicItem
                         songUrl={message.src}
                         title={message.songTitle}
@@ -130,25 +134,13 @@ const SongForm = () => {
                     </div>
                   );
                 }
-
-                return (
-                  <MusicItem
-                    key={uuidv4()}
-                    songUrl="https://firebasestorage.googleapis.com/v0/b/symphony-hack.appspot.com/o/audio-files%2F1722819088406.wav?alt=media&token=c649db8c-fb77-4609-a40c-e54c014256e7"
-                    title="Echoes of Emotion"
-                    userName="Sam Sepiol"
-                    tags={['rock']}
-                    changeSize={false}
-                    onPlayNext={initialSongConfig}
-                  />
-                );
               })}
             </div>
 
             <div className="row-start-3 px-5 pb-5 place-content-center">
               {promptMessages.length === 0 && (
                 <div className="flex flex-col">
-                  <p className="pl-3 mb-3 text-white">¿Sin ideas? Aquí unas recomendaciones:</p>
+                  <p className="pl-3 mb-3 dark:text-white text-custom">¿Sin ideas? Aquí unas recomendaciones:</p>
                   <div className="flex flex-wrap gap-2 mb-3">
                     {suggestionOptions.map((suggestion) => (
                       <Button
@@ -162,6 +154,7 @@ const SongForm = () => {
                       </Button>
                     ))}
                   </div>
+                  <Divider />
                 </div>
               )}
               <div className="flex px-3">

@@ -5,6 +5,7 @@ export const SongContext = createContext();
 
 const SongProvider = ({ children }) => {
   const [showSongForm, setShowSongForm] = useState(true);
+  const [playListEmitter, setPlaylistEmitter] = useState();
   const [songList, setSongList] = useState([]);
 
   const handleRemoveTrack = (songUrl) => {
@@ -16,9 +17,11 @@ const SongProvider = ({ children }) => {
     <SongContext.Provider
       value={{
         songList,
+        playListEmitter,
         showSongForm,
         setSongList,
         setShowSongForm,
+        setPlaylistEmitter,
         handleRemoveTrack,
       }}
     >

@@ -1,12 +1,17 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useContext } from 'react';
+import { DarkThemeContext } from '@context/DarkTheme';
 
 const noteVariations = ['♩', '♪', '♫', '♬', '♭', '♯', '𝄞', '𝄢', '♮'];
 const grayColors = ['#CCCCCC', '#AAAAAA', '#888888'];
+const yellowColors = ['#fef08a', '#facc15', '#ca8a04'];
 
 const DotAnimation = () => {
   const canvasRef = useRef(null);
   const dotsRef = useRef([]);
   const mousePosRef = useRef({ x: 0, y: 0 });
+  const { isDarkMode } = useContext(DarkThemeContext);
+
+  const dotColors = isDarkMode ? grayColors : yellowColors;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -27,7 +32,7 @@ const DotAnimation = () => {
           y: Math.random() * canvas.height,
           size: Math.random() * 1.5 + 1,
           speed: Math.random() * 0.5 + 0.1,
-          color: grayColors[Math.floor(Math.random() * grayColors.length)],
+          color: dotColors[Math.floor(Math.random() * grayColors.length)],
           character: noteVariations[Math.floor(Math.random() * noteVariations.length)],
         });
       }
@@ -84,7 +89,7 @@ const DotAnimation = () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, []);
+  }, [isDarkMode]);
 
   useEffect(() => {
     const handleMouseMove = (event) => {

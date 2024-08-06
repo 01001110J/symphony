@@ -26,12 +26,12 @@ const Settings = () => {
       <div className="w-full md:w-1/2">
         <Title level={3}>Theme</Title>
         <div className="flex items-center">
-          <Text className="mr-3">{isDarkMode ? 'Desactivar' : 'Activar'} dark mode</Text>
+          <Text className="mr-3 text-custom">{isDarkMode ? 'Desactivar' : 'Activar'} dark mode</Text>
           <Switch value={isDarkMode} onChange={toggleDarkTheme} />
         </div>
         <Divider />
         <Title level={3}>Hugging face API 🤗</Title>
-        <Text className="mb-3">
+        <Text className="mb-3 text-custom">
           Este token te servirá para crear
           <Tag color="orange" className="mx-1">
             canciones
@@ -51,7 +51,7 @@ const Settings = () => {
             <Input
               autoFocus
               disabled={hasHuggingToken}
-              type="text"
+              type="password"
               placeholder="Hugging face token"
               value={huggingInput.value}
               onChange={(e) =>
@@ -75,7 +75,7 @@ const Settings = () => {
                 cancelText="No"
               >
                 <Button danger className="w-full mt-3">
-                  <img src="/audio-delete.svg" alt="" />
+                  Eliminar
                 </Button>
               </Popconfirm>
             )}
@@ -83,7 +83,7 @@ const Settings = () => {
         </Form>
         <Divider />
         <Title level={3}>Perplexity API</Title>
-        <Text className="mb-3">
+        <Text className="mb-3 text-custom">
           Este token te servirá para crear los
           <Tag color="orange" className="mx-1">
             títulos
@@ -103,7 +103,7 @@ const Settings = () => {
             <Input
               autoFocus
               disabled={hasPerplexityToken}
-              type="text"
+              type="password"
               placeholder="Perplexity token"
               value={perplexityInput.value}
               onChange={(e) =>
@@ -131,7 +131,7 @@ const Settings = () => {
                 cancelText="No"
               >
                 <Button danger className="w-full mt-3">
-                  <img src="/audio-delete.svg" alt="" />
+                  Eliminar
                 </Button>
               </Popconfirm>
             )}

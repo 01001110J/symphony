@@ -2,18 +2,14 @@ import { generateText } from 'ai';
 import { createOpenAI } from '@ai-sdk/openai';
 
 import {
-  HUGGING_FACE_LOCAL_STORAGE_TOKEN,
-  PERPLEXITY_LOCAL_STORAGE_TOKEN,
   TITLE_SONG_PROMPT,
-  HUGGING_FACE_API_URL,
+  LYRICS_SONG_PROMPT,
   PERPLEXITY_API_URL,
+  HUGGING_FACE_API_URL,
+  PERPLEXITY_LOCAL_STORAGE_TOKEN,
+  HUGGING_FACE_LOCAL_STORAGE_TOKEN,
 } from '@constants';
 
-/**
- * Verifies if is a valid Hugging face token.
- *
- * @param {string} token - Hugging face api token.
- */
 export const isValidHFToken = (token) => {
   const regex = /^Bearer hf_[A-Za-z0-9-_]{15,}$/;
   return regex.test(token);
@@ -24,6 +20,13 @@ export const getCurrentTime = () => {
   const hours = String(now.getHours()).padStart(2, '0');
   const minutes = String(now.getMinutes()).padStart(2, '0');
   return `${hours}:${minutes}`;
+};
+
+const processLyrics = (text) => {
+  let cleanText = text.replace(/\*/g, '');
+  let linesArray = cleanText.split('\n').filter((text) => text !== '');
+
+  return linesArray;
 };
 
 export const cleanAndSplitString = (input) => {
@@ -50,6 +53,26 @@ export const getSongTitle = async (songPrompt) => {
     const titleAndCategory = cleanAndSplitString(text);
 
     return titleAndCategory;
+  } catch (error) {
+    return console.log(error);
+  }
+};
+
+export const getSongLyrics = async (lyricsPrompt) => {
+  try {
+    const token = localStorage.getItem(PERPLEXITY_LOCAL_STORAGE_TOKEN);
+
+    const perplexity = createOpenAI({
+      apiKey: token,
+      baseURL: PERPLEXITY_API_URL,
+    });
+
+    const { text } = await generateText({
+      model: perplexity('llama-3-sonar-large-32k-online'),
+      prompt: LYRICS_SONG_PROMPT + lyricsPrompt,
+    });
+
+    return processLyrics(text);
   } catch (error) {
     return console.log(error);
   }

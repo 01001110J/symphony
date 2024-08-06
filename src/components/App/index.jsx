@@ -1,8 +1,7 @@
 import Router from '@components/Router';
-import DarkThemeProvider from '@context/DarkTheme';
-import TokensProvider from '@context/Tokens';
 
-import './App.css';
+import TokensProvider from '@context/Tokens';
+import DarkThemeProvider from '@context/DarkTheme';
 
 const App = () => (
   <DarkThemeProvider>

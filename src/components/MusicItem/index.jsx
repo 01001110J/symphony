@@ -1,17 +1,19 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useContext } from 'react';
 import { Tag, Tooltip, Button } from 'antd';
 import PropTypes from 'prop-types';
 
 import { CiPause1 } from 'react-icons/ci';
-import { BsDownload } from "react-icons/bs";
+import { BsDownload } from 'react-icons/bs';
 
+import { DarkThemeContext } from '@context/DarkTheme';
 
-import playLogo from '@assets/logo-white.svg';
+import logoWhiteSrc from '@assets/logo.svg';
+import logoDarkSrc from '@assets/logo-white.svg';
 
 const MusicItemSkeleton = () => (
   <article className="w-[90%] mb-4 rounded-xl bg-gray-300 p-0.5 shadow-xl animate-pulse">
     <div className="rounded-[10px] bg-white p-4 sm:p-4 dark:bg-slate-950 relative">
-    <div className="absolute w-8 h-6 mb-1 bg-gray-300 rounded top-2 right-3" />
+      <div className="absolute w-8 h-6 mb-1 bg-gray-300 rounded top-2 right-3" />
       <div className="w-3/4 h-6 mb-2 bg-gray-300 rounded"></div>
       <div className="w-1/4 h-4 mb-4 bg-gray-300 rounded"></div>
       <div className="flex items-end justify-between h-fit">
@@ -36,10 +38,11 @@ const MusicItem = ({
   onPlayNext,
   changeSize = true,
   loading = false,
-  showContinueButton = true
+  showContinueButton = true,
 }) => {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const { isDarkMode } = useContext(DarkThemeContext);
 
   const toggleAudio = () => {
     if (isPlaying) {
@@ -74,21 +77,25 @@ const MusicItem = ({
           </div>
           <div className="flex items-end">
             <Tooltip title="Descargar canción">
-              <a className='flex items-end mr-4' href={songUrl} download={`${title}-symphony.wav`}>
-                <Button className="text-white h-[22px]">
+              <a className="flex items-end mr-4" href={songUrl} download={`${title}-symphony.wav`}>
+                <Button className="dark:text-white h-[22px]">
                   <BsDownload />
                 </Button>
               </a>
             </Tooltip>
             <Tooltip title={isPlaying ? 'Pause' : 'Play'}>
-              <Button onClick={toggleAudio} className="text-white h-[22px]">
-                {isPlaying ? <CiPause1 /> : <img src={playLogo} alt="" className='h-full' />}
+              <Button onClick={toggleAudio} className="dark:text-white h-[22px]">
+                {isPlaying ? (
+                  <CiPause1 />
+                ) : (
+                  <img src={isDarkMode ? logoDarkSrc : logoWhiteSrc} alt="" className="h-full" />
+                )}
               </Button>
             </Tooltip>
             {showContinueButton && (
               <Tooltip title="Al continuar con este audio se generará un nuevo proyecto">
                 <Button
-                  className="ml-4 text-white h-[22px]"
+                  className="ml-4 dark:text-white h-[22px]"
                   onClick={() =>
                     onPlayNext({
                       name: title,
