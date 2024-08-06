@@ -29,8 +29,8 @@ const SongForm = () => {
   const [isInputDisabled, setIsInputDisabled] = useState(false);
 
   const initialSongConfig = (songUrl) => {
-    setShowSongForm(false);
     setSongList([songUrl]);
+    setShowSongForm(false);
   };
 
   const handleMessages = async (message, actor, type = 'message') => {

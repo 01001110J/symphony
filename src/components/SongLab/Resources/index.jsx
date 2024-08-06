@@ -55,7 +55,7 @@ const Resources = () => {
   );
 
   return (
-    <aside className="flex flex-col flex-1 h-full row-start-2 px-1 overflow-x-hidden overflow-y-auto ant-tabs-content bg-slate-200 rounded-xl dark:text-white">
+    <aside className="flex flex-col flex-1 h-full row-start-2 px-1 overflow-x-hidden overflow-y-auto ant-tabs-content bg-slate-200 rounded-xl dark:bg-slate-900 dark:text-white">
       <h3 className="flex items-center my-3 text-lg font-bold ">
         <CiFolderOn className="mr-3" /> Tus recursos
       </h3>

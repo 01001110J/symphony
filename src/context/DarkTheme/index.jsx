@@ -26,6 +26,19 @@ const DarkThemeProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    console.log(`
+      _________________________________
+      / Hello friend, gracias por visitar mi \\
+      \\ proyecto <3                       /
+        ---------------------------------
+               \\   ^__^ 
+                \\  (oo)\\_______
+                   (__)\\       )\\/\\
+                       ||----w |
+                       ||     ||
+          
+      `);
+
     if (isDarkMode) {
       document.body.classList.add('dark');
     } else {
